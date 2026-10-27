@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package karga.agent.v1;
+
+service AgentService {
+  rpc Connect(stream AgentServiceConnectRequest) returns (stream AgentServiceConnectResponse);
+}
+
+message AgentServiceConnectRequest {
+  oneof payload {
+    Hello hello = 1;
+    Heartbeat heartbeat = 2;
+    TaskResult task_result = 3;
+  }
+}
+
+message AgentServiceConnectResponse {
+  oneof payload {
+    TaskRequest task_request = 1;
+  }
+}
+
+message Hello {
+  string agent_id = 1;
+  string agent_version = 2;
+}
+
+message Heartbeat {}
+message TaskRequest { string task_id = 1; }
+message TaskResult  { string task_id = 1; bool ok = 2; string error = 3; }
